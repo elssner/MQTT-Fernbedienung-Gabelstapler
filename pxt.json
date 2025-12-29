@@ -1,0 +1,29 @@
+{
+    "name": "MQTT-Fernbedienung-Gabelstapler",
+    "version": "0.2.0",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "pins": "github:calliope-net/pins#v1.2.5",
+        "v3": "*",
+        "serial": "github:calliope-net/serial#v0.2.4",
+        "lcd": "github:calliope-net/lcd#v0.1.5",
+        "basicv3": "github:calliope-net/basicv3#v0.0.2"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "7.1.31",
+        "targetId": "calliopemini"
+    },
+    "supportedTargets": [
+        "calliopemini"
+    ],
+    "preferredEditor": "blocksprj"
+}
