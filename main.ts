@@ -57,6 +57,9 @@ input.onGesture(Gesture.TiltLeft, function () {
     richtung = "_left"
     neigen()
 })
+input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
+    qwiic_motorsteuerung = !(qwiic_motorsteuerung)
+})
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     if (!(mqtt_connected)) {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xffffff)
@@ -145,6 +148,7 @@ function mqtt_publish_bt (button_id: string, speed: number) {
     }
 }
 let last_button_id = ""
+let qwiic_motorsteuerung = false
 let gesten = false
 let mqtt_connected = false
 let i_payload = 0
