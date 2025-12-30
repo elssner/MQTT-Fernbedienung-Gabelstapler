@@ -34,7 +34,7 @@ function mqtt_publish_joystick () {
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000)
             basic.pause(200)
         }
-        lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+        lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
     }
 }
 input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
@@ -70,7 +70,7 @@ input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), Colors.Off)
         basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.c), 0xff0000, serial.at_command(serial.serial_eAT(serial.eAT_commands.at_mqttclean), 2), 0xffff00)
     }
-    lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 })
 input.onGesture(Gesture.LogoDown, function () {
     if (!(qwiicmotor_steuerung)) {
@@ -83,12 +83,12 @@ input.onGesture(Gesture.LogoDown, function () {
 function mqtt_publish_stop_a_aus () {
     i_payload += 1
     basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000, serial.mqtt_publish("topic", serial.string_join(";", i_payload, "bt_stop", 0)), 0x000000)
-    lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 }
 input.onButtonEvent(Button.A, input.buttonEventValue(ButtonEvent.Hold), function () {
     if (!(lcd.get_display(lcd.eDisplay.none))) {
         if (serial.at_command(serial.serial_eAT(serial.eAT_commands.at_mqttconn), 5)) {
-            lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+            lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
         }
     } else {
         basic.showString("" + (serial.get_response()[serial.get_response_index()]))
@@ -99,7 +99,7 @@ input.onButtonEvent(Button.B, input.buttonEventValue(ButtonEvent.Hold), function
     mqtt_connected = false
     if (serial.mqtt_client("calliope")) {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.c), 0xff8000)
-        lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+        lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
         if (serial.mqtt_connect("192.168.8.2", 1884)) {
             i_payload = 0
             joystick_fahren = 128
@@ -115,7 +115,7 @@ input.onButtonEvent(Button.B, input.buttonEventValue(ButtonEvent.Hold), function
     } else {
         basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.c), 0xff0000, serial.at_command(serial.serial_eAT(serial.eAT_commands.at_mqttclean), 2), 0xffff00)
     }
-    lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 })
 input.onGesture(Gesture.ScreenUp, function () {
     mqtt_publish_bt("bt_stop", 0)
@@ -140,7 +140,7 @@ function mqtt_publish_relay (on: string) {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000)
         basic.pause(200)
     }
-    lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 }
 function mqtt_publish_bt (button_id: string, speed: number) {
     if (mqtt_connected && gesten && last_button_id != button_id) {
@@ -152,7 +152,7 @@ function mqtt_publish_bt (button_id: string, speed: number) {
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000)
             basic.pause(200)
         }
-        lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+        lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
     }
 }
 let last_button_id = ""
@@ -176,7 +176,7 @@ if (lcd.get_display(lcd.eDisplay.none)) {
     basic.pause(2000)
 }
 basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000, serial.at_command(serial.serial_eAT(serial.eAT_commands.at_rst), 5), 0x00FF00)
-lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
+lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 basic.forever(function () {
     if (mqtt_connected && pins.joystick_connected()) {
         mqtt_publish_joystick()
