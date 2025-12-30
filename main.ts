@@ -59,6 +59,11 @@ input.onGesture(Gesture.TiltLeft, function () {
 })
 input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
     qwiicmotor_steuerung = !(qwiicmotor_steuerung)
+    if (!(qwiicmotor_steuerung)) {
+        mqtt_publish_bt("q", 128)
+    } else {
+        basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00)
+    }
 })
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     if (!(mqtt_connected)) {
@@ -118,10 +123,14 @@ input.onButtonEvent(Button.B, input.buttonEventValue(ButtonEvent.Hold), function
     lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 })
 input.onGesture(Gesture.ScreenUp, function () {
-    mqtt_publish_bt("bt_stop", 0)
-    richtung = ""
-    if (g_status != 1) {
-        g_status = 0
+    if (!(qwiicmotor_steuerung)) {
+        mqtt_publish_bt("bt_stop", 0)
+        richtung = ""
+        if (g_status != 1) {
+            g_status = 0
+        }
+    } else {
+        mqtt_publish_bt("q", 128)
     }
 })
 input.onGesture(Gesture.LogoUp, function () {
