@@ -77,7 +77,7 @@ input.onGesture(Gesture.LogoDown, function () {
         g_status += 2
         mqtt_publish_bt("bt_fw" + richtung, bt_speed)
     } else {
-        mqtt_publish_bt("q", 128 + 64)
+        mqtt_publish_bt("q", 128 + 80)
     }
 })
 function mqtt_publish_stop_a_aus () {
@@ -129,7 +129,7 @@ input.onGesture(Gesture.LogoUp, function () {
         g_status += 2
         mqtt_publish_bt("bt_bw" + richtung, bt_speed)
     } else {
-        mqtt_publish_bt("q", 128 - 64)
+        mqtt_publish_bt("q", 128 - 80)
     }
 })
 function mqtt_publish_relay (on: string) {
