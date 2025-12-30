@@ -58,7 +58,7 @@ input.onGesture(Gesture.TiltLeft, function () {
     neigen()
 })
 input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
-    qwiic_motorsteuerung = !(qwiic_motorsteuerung)
+    qwiicmotor_steuerung = !(qwiicmotor_steuerung)
 })
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     if (!(mqtt_connected)) {
@@ -73,8 +73,12 @@ input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     lcd.write_array(serial.get_response(), lcd.eINC.inc0, serial.get_response_index())
 })
 input.onGesture(Gesture.LogoDown, function () {
-    g_status += 2
-    mqtt_publish_bt("bt_fw" + richtung, bt_speed)
+    if (!(qwiicmotor_steuerung)) {
+        g_status += 2
+        mqtt_publish_bt("bt_fw" + richtung, bt_speed)
+    } else {
+        mqtt_publish_bt("q", 128 + 64)
+    }
 })
 function mqtt_publish_stop_a_aus () {
     i_payload += 1
@@ -121,8 +125,12 @@ input.onGesture(Gesture.ScreenUp, function () {
     }
 })
 input.onGesture(Gesture.LogoUp, function () {
-    g_status += 2
-    mqtt_publish_bt("bt_bw" + richtung, bt_speed)
+    if (!(qwiicmotor_steuerung)) {
+        g_status += 2
+        mqtt_publish_bt("bt_bw" + richtung, bt_speed)
+    } else {
+        mqtt_publish_bt("q", 128 - 64)
+    }
 })
 function mqtt_publish_relay (on: string) {
     i_payload += 1
@@ -148,7 +156,7 @@ function mqtt_publish_bt (button_id: string, speed: number) {
     }
 }
 let last_button_id = ""
-let qwiic_motorsteuerung = false
+let qwiicmotor_steuerung = false
 let gesten = false
 let mqtt_connected = false
 let i_payload = 0
