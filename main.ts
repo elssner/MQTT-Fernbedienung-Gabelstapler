@@ -2,11 +2,6 @@ input.onGesture(Gesture.TiltRight, function () {
     richtung = "_right"
     neigen()
 })
-function mqtt_publish_qstop_a_aus () {
-    i_payload += 1
-    basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000, serial.mqtt_publish("topic", serial.string_join(";", i_payload, "q", 128)), 0x000000)
-    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
-}
 function neigen () {
     if (g_status == 1) {
         mqtt_publish_bt("bt" + richtung, bt_speed)
@@ -196,12 +191,12 @@ let gesten = false
 let joystick_lenken = 0
 let joystick_fahren = 0
 let last_joystick_button = ""
+let i_payload = 0
 let last_qspeed = 0
 let qmotor = false
 let mqtt_connected = false
 let bt_speed = 0
 let g_status = 0
-let i_payload = 0
 let richtung = ""
 basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffffff)
 serial.init_serial()
