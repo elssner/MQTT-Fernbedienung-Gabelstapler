@@ -2,6 +2,11 @@ input.onGesture(Gesture.TiltRight, function () {
     richtung = "_right"
     neigen()
 })
+function mqtt_publish_qstop_a_aus () {
+    i_payload += 1
+    basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000, serial.mqtt_publish("topic", serial.string_join(";", i_payload, "q", 128)), 0x000000)
+    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
+}
 function neigen () {
     if (g_status == 1) {
         mqtt_publish_bt("bt" + richtung, bt_speed)
@@ -15,10 +20,10 @@ input.onGesture(Gesture.ScreenDown, function () {
     mqtt_publish_bt("bt_turn" + richtung, bt_speed)
 })
 function mqtt_publish_qmotor (speed: number) {
-    if (mqtt_connected && qwiicmotor_steuerung && last_qspeed == speed) {
+    if (mqtt_connected && qmotor && last_qspeed != speed) {
         i_payload += 1
         if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "q", speed))) {
-            basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00, speed == 128, 0x00ffff)
+            basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00, speed == 128, 0x007fff)
             last_qspeed = speed
         } else {
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000)
@@ -54,7 +59,14 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     if (!(lcd.get_display(lcd.eDisplay.none))) {
         lcd.write_array(serial.get_response(), lcd.eINC.inc1)
     } else if (mqtt_connected) {
-        gesten = !(gesten)
+        if (!(gesten) || qmotor) {
+            mqtt_publish_qmotor(128)
+            qmotor = false
+            g_status = 0
+            gesten = true
+        } else {
+            gesten = false
+        }
         if (gesten && bt_speed == 384) {
             bt_speed = 512
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0x0000ff)
@@ -71,11 +83,15 @@ input.onGesture(Gesture.TiltLeft, function () {
     neigen()
 })
 input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
-    qwiicmotor_steuerung = !(qwiicmotor_steuerung)
-    if (!(qwiicmotor_steuerung)) {
-        mqtt_publish_bt("q", 128)
-    } else {
-        basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00)
+    if (mqtt_connected) {
+        if (qmotor) {
+            mqtt_publish_qmotor(128)
+            qmotor = false
+        } else {
+            gesten = false
+            qmotor = true
+            basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00)
+        }
     }
 })
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
@@ -91,7 +107,7 @@ input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 })
 input.onGesture(Gesture.LogoDown, function () {
-    if (!(qwiicmotor_steuerung)) {
+    if (!(qmotor)) {
         g_status += 2
         mqtt_publish_bt("bt_fw" + richtung, bt_speed)
     } else {
@@ -100,7 +116,7 @@ input.onGesture(Gesture.LogoDown, function () {
 })
 function mqtt_publish_stop_a_aus () {
     i_payload += 1
-    basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000, serial.mqtt_publish("topic", serial.string_join(";", i_payload, "bt_stop", 0)), 0x000000)
+    basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000, serial.mqtt_publish("topic", serial.string_join(";", i_payload, "stop")), 0x000000)
     lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 }
 input.onButtonEvent(Button.A, input.buttonEventValue(ButtonEvent.Hold), function () {
@@ -136,7 +152,7 @@ input.onButtonEvent(Button.B, input.buttonEventValue(ButtonEvent.Hold), function
     lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 })
 input.onGesture(Gesture.ScreenUp, function () {
-    if (!(qwiicmotor_steuerung)) {
+    if (!(qmotor)) {
         mqtt_publish_bt("bt_stop", 0)
         richtung = ""
         if (g_status != 1) {
@@ -147,7 +163,7 @@ input.onGesture(Gesture.ScreenUp, function () {
     }
 })
 input.onGesture(Gesture.LogoUp, function () {
-    if (!(qwiicmotor_steuerung)) {
+    if (!(qmotor)) {
         g_status += 2
         mqtt_publish_bt("bt_bw" + richtung, bt_speed)
     } else {
@@ -182,12 +198,12 @@ let gesten = false
 let joystick_lenken = 0
 let joystick_fahren = 0
 let last_joystick_button = ""
-let i_payload = 0
 let last_qspeed = 0
-let qwiicmotor_steuerung = false
+let qmotor = false
 let mqtt_connected = false
 let bt_speed = 0
 let g_status = 0
+let i_payload = 0
 let richtung = ""
 basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffffff)
 serial.init_serial()
