@@ -165,7 +165,7 @@ input.onGesture(Gesture.LogoUp, function () {
 })
 function mqtt_publish_relay (on: string) {
     i_payload += 1
-    if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, on))) {
+    if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "r", on))) {
         last_joystick_button = on
     } else {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000)
