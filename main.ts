@@ -15,11 +15,10 @@ input.onGesture(Gesture.ScreenDown, function () {
     mqtt_publish_bt("bt_turn" + richtung, bt_speed)
 })
 function mqtt_publish_qmotor (speed: number) {
-    if (mqtt_connected && qmotor && last_qspeed != speed) {
+    if (mqtt_connected && qmotor) {
         i_payload += 1
         if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "q", speed))) {
             basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00, speed == 128, 0x00ffff)
-            last_qspeed = speed
         } else {
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000)
             basic.pause(200)
@@ -104,7 +103,8 @@ input.onGesture(Gesture.LogoDown, function () {
         g_status += 2
         mqtt_publish_bt("bt_fw" + richtung, bt_speed)
     } else {
-        mqtt_publish_qmotor(128 + 80)
+        pins.comment(pins.pins_text("vorwärts, runter"))
+        mqtt_publish_qmotor(255)
     }
 })
 function mqtt_publish_stop_a_aus () {
@@ -160,12 +160,14 @@ input.onGesture(Gesture.LogoUp, function () {
         g_status += 2
         mqtt_publish_bt("bt_bw" + richtung, bt_speed)
     } else {
-        mqtt_publish_qmotor(128 - 80)
+        pins.comment(pins.pins_text("rückwärts, hoch"))
+        mqtt_publish_qmotor(1)
     }
 })
 function mqtt_publish_relay (on: string) {
     i_payload += 1
     if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "r", on))) {
+        basic.pause(200)
         last_joystick_button = on
     } else {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000)
@@ -192,7 +194,6 @@ let joystick_lenken = 0
 let joystick_fahren = 0
 let last_joystick_button = ""
 let i_payload = 0
-let last_qspeed = 0
 let qmotor = false
 let mqtt_connected = false
 let bt_speed = 0
