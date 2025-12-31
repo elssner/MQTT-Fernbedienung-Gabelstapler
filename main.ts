@@ -59,8 +59,8 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     if (!(lcd.get_display(lcd.eDisplay.none))) {
         lcd.write_array(serial.get_response(), lcd.eINC.inc1)
     } else if (mqtt_connected) {
+        mqtt_publish_stop_a_aus()
         if (!(gesten) || qmotor) {
-            mqtt_publish_qmotor(128)
             qmotor = false
             g_status = 0
             gesten = true
@@ -73,8 +73,6 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
         } else if (gesten) {
             bt_speed = 384
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0x7f00ff)
-        } else {
-            mqtt_publish_stop_a_aus()
         }
     }
 })
@@ -84,8 +82,8 @@ input.onGesture(Gesture.TiltLeft, function () {
 })
 input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
     if (mqtt_connected) {
+        mqtt_publish_stop_a_aus()
         if (qmotor) {
-            mqtt_publish_qmotor(128)
             qmotor = false
         } else {
             gesten = false
