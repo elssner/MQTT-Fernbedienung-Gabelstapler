@@ -18,7 +18,7 @@ function mqtt_publish_qmotor (speed: number) {
     if (mqtt_connected && qmotor && last_qspeed != speed) {
         i_payload += 1
         if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "q", speed))) {
-            basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00, speed == 128, 0x007fff)
+            basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00, speed == 128, 0x00ffff)
             last_qspeed = speed
         } else {
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000)
