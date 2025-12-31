@@ -14,6 +14,19 @@ input.onGesture(Gesture.ScreenDown, function () {
     g_status += 2
     mqtt_publish_bt("bt_turn" + richtung, bt_speed)
 })
+function mqtt_publish_qmotor (speed: number) {
+    if (mqtt_connected && qwiicmotor_steuerung && last_qspeed == speed) {
+        i_payload += 1
+        if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "q", speed))) {
+            basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.a), 0xffff00, speed == 128, 0x00ffff)
+            last_qspeed = speed
+        } else {
+            basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0xff0000)
+            basic.pause(200)
+        }
+        lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
+    }
+}
 function mqtt_publish_joystick () {
     pins.read_joystick()
     if (last_joystick_button != "1" && pins.get_button_on_off()) {
@@ -82,7 +95,7 @@ input.onGesture(Gesture.LogoDown, function () {
         g_status += 2
         mqtt_publish_bt("bt_fw" + richtung, bt_speed)
     } else {
-        mqtt_publish_bt("q", 128 + 80)
+        mqtt_publish_qmotor(128 + 80)
     }
 })
 function mqtt_publish_stop_a_aus () {
@@ -130,7 +143,7 @@ input.onGesture(Gesture.ScreenUp, function () {
             g_status = 0
         }
     } else {
-        mqtt_publish_bt("q", 128)
+        mqtt_publish_qmotor(128)
     }
 })
 input.onGesture(Gesture.LogoUp, function () {
@@ -138,7 +151,7 @@ input.onGesture(Gesture.LogoUp, function () {
         g_status += 2
         mqtt_publish_bt("bt_bw" + richtung, bt_speed)
     } else {
-        mqtt_publish_bt("q", 128 - 80)
+        mqtt_publish_qmotor(128 - 80)
     }
 })
 function mqtt_publish_relay (on: string) {
@@ -165,13 +178,14 @@ function mqtt_publish_bt (button_id: string, speed: number) {
     }
 }
 let last_button_id = ""
-let qwiicmotor_steuerung = false
 let gesten = false
-let mqtt_connected = false
-let i_payload = 0
 let joystick_lenken = 0
 let joystick_fahren = 0
 let last_joystick_button = ""
+let i_payload = 0
+let last_qspeed = 0
+let qwiicmotor_steuerung = false
+let mqtt_connected = false
 let bt_speed = 0
 let g_status = 0
 let richtung = ""
