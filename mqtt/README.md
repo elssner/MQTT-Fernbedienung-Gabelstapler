@@ -1,121 +1,84 @@
+Diese Seite bei [https://elssner.github.io/MQTT-Fernbedienung/mqtt/](https://elssner.github.io/MQTT-Fernbedienung/mqtt/) öffnen.
 
-Diese Seite bei [https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/) öffnen
+* fischertechnik ROBO Pro Coding Projekt: [MQTT_Gabelstapler](https://git.fischertechnik-cloud.com/calliope/MQTT_Gabelstapler)
 
-## Calliope WLAN Fernbedienung (MQTT / IoT)
+MQTT erfordert eine WLAN Verbindung mit IP Adressen zwischen Sender und Empfänger. Der TXT 4.0 Controller auf dem Modell ist WLAN Access Point und mit Python wird im Linux eine eigene mosquitto Instanz an Port 1884 gestartet.
+Mit diesem MQTT Broker verbindet sich lokal das ROBO Pro Coding Projekt als MQTT Subscriber. Als Daten existiert nur ein einziger String, der in der dauerhaft Schleife ständig abgefragt wird.
+Der TXT 4.0 Controller auf dem Modell ist nur Subscriber und sendet keine Daten.
 
-![](DSC00693_Fernbedienung_512.JPG)
+### Fernbedienung Sender
 
-* Calliope v3 Projekt laden: [elssner/MQTT-Fernbedienung](https://elssner.github.io/MQTT-Fernbedienung/)
-* WLAN Modul: [Cytron: Grove WiFi 8266 - IoT for micro:bit and beyond](doc/)
-* Andere 8266 oder 8285 Module sind nicht geeignet.
-* I²C Qwiic Joystick und LCD Display (Qwiic oder Grove) sind optional.
+Als MQTT Publisher ist ein **zweiter TXT 4.0 Controller** geeignet:
+* fischertechnik ROBO Pro Coding Projekt: [MQTT_Fernbedienung_Joystick](https://git.fischertechnik-cloud.com/calliope/MQTT_Fernbedienung_Joystick)
 
-LED Status|`a`|`b`|`c`
----|---|---|---
-beim Verbinden|serielle Schnittstelle|WLAN Verbindung|MQTT Verbindung
-beim Fernsteuern|Gesten (Calliope neigen)|Joystick|MQTT Verbindung
+**Calliope** kann mit [Cytron WLAN Modul](../doc) ebenfalls als MQTT Publisher den Daten String an den TXT 4.0 Controller senden. 
+* Calliope v3 [MakeCode](https://makecode.calliope.cc/) Projekt: [MQTT-Fernbedienung-Gabelstapler](https://github.com/elssner/MQTT-Fernbedienung-Gabelstapler)
 
-#### LED `a` `b` `c` Farben
-* `weiß` Ereignis gestartet (Knopf loslassen)
-* `grün` bei OK nach einem AT-Kommando
-* `rot` bei Fehler nach einem AT-Kommando
-* `orange` Warnung, warten
-* `blau` Fernsteuerung bereit, Daten werden gesendet (Publish)
-* `gelb` Verbindung getrennt (mit Knopf B)
+Für die Steuerung von Omniwheels in alle Richtungen bietet sich der auf dem Calliope integrierte Gestensensor an.
+Nur durch Neigen des Calliope kann das Modell ferngesteuert werden. Allerdings ist Kurven fahren schwierig, wenn alle Motoren mit der gleichen Geschwindigkeit synchronisiert sind (und sich nur in verschiedene Richtungen oder gar nicht drehen).
+
+Ein I²C Joystick lässt sich auch einfach an Calliope stecken. Zum Fahren und Lenken ohne Servo bietet sich die Raupensteuerung an. Dazu werden die Räder vorn und hinten synchronisiert (wie bei einer Kette). 
+Bei der Joystick Steuerung werden zwei Geschwindigkeiten für links und rechts übertragen.
 
 
-### `a` beim Start
-* `a weiß` serielle Schnittstelle wird initialisiert
-* `a orange` 2 Sekunden warten auf Stromversorgung
-* LCD Display erkennen und initialisieren
-* `b orange` wenn kein Display erkannt
-* AT+RST (Reset WLAN Modul)
-* `a grün` bei Erfolg `a rot` bei Fehler
-* Anzeige der AT Response auf LCD Display
+### MQTT Protokoll
 
-Jetzt sollte `a grün` leuchten und - wenn kein Display angeschlossen ist - `b orange`.
+Calliope sendet an das WLAN Modul seriell (RX/TX) AT Kommandos wie bei einem Modem.\
+Die MQTT AT Kommandos existieren nur auf dem Cytron Modul. 
+> `AT+MQTTPUB=0,"topic","3;j;128;128",1,0`
 
-### `b` Kopf B geklickt
-* WLAN verbinden <ins>wenn MQTT nicht verbunden</ins>
-  * `b weiß` wenn Kopf B geklickt
-  * WLAN verbinden (SSID und Password)
-  * `b grün` bei Erfolg `b rot` bei Fehler
-* MQTT trennen <ins>wenn MQTT verbunden</ins>
-  * MQTT Publish: STOP zum Modell senden
-  * `a aus` bei Erfolg `a rot` bei Fehler
-  * `b aus`
-  * <ins>MQTT trennen</ins>
-  * `c gelb` bei Erfolg `c rot` bei Fehler
-* Anzeige der AT Response auf LCD Display
+Der Daten-String `"3;j;128;128"` ist mit Semikolon CSV kodiert.\
+Beispiele: `1;stop` `2;q;128` `3;r;1` `4;m;-512;512` `5;j;0;255` `6;bt_fw;512`
 
-Jetzt sollte beim Verbinden `a grün` und `b grün` leuchten.
-Nach dem Trennen nur `c gelb`.
+Der MQTT Subscriber (TXT 4.0 Python Code Blöcke) teilt den Daten-String in eine Liste von Strings.\
+`['3', 'j', '128', '128']` Das erste Element ist eine laufende Nummer. Jede Nummer wird nur einmal verarbeitet.
+Nur bei Änderung des Zähles wird eine Aktion bei den Motoren (und Relais) ausgelöst.
 
-### `c` Kopf B halten
-* `c weiß` Kopf B erkannt, loslassen
-* MQTT Client vorbereiten (ID, Username, Password)
-  * <ins>MQTT trennen</ins> bei Fehler
-  * `c gelb` bei Erfolg `c rot` bei Fehler
-* `c orange` bei Erfolg
-* Anzeige der AT Response auf LCD Display
-* MQTT Client verbinden (IP Adresse, Port)
-  * `c rot` bei Fehler
-* `c grün` <ins>MQTT ist verbunden</ins>
-* `a blau` wenn Gesten aktiviert
-* `b blau` wenn Joystick angeschlossen
-* Variablen initialisieren
-* Anzeige der AT Response auf LCD Display
+Folgende Daten-Strings werden vom Modell **MQTT Gabelstapler** verstanden:
 
-`c grün` zeigt an, dass MQTT verbunden und die Fernbedienung bereit ist.\
-`b blinkt blau`, wenn die Daten vom Joystick gesendet werden.\
-`a blau`, wenn die Gesten gesendet werden (muss noch aktiviert werden).
+* Länge >= 2 und [1] = "stop"\
+  *Encodermotoren und I²C Qwiic Motoren stoppen* 
+  * [0] Zähler
+  * [1] = "stop"
+* Länge >= 3 und [1] = "q"\
+  *Motoren über I²C steuern* [SparkFun Qwiic Motor Driver](https://www.sparkfun.com/products/15451)
+  * [0] Zähler
+  * [1] = "q"
+  * [2] = Qwiic Motor A: (0 .. 128 .. 255) 128 ist STOP
+  * optional [3] = Qwiic Motor B: (0 .. 128 .. 255)
+  * optional [4] = Qwiic Motor C: (0 .. 128 .. 255)
+  * optional [5] = Qwiic Motor D: (0 .. 128 .. 255)
+* Länge >= 3 und [1] = "r"\
+  *Licht mit I²C Relais schalten* [SparkFun Qwiic Single Relay](https://www.sparkfun.com/products/15093)
+  * [0] Zähler
+  * [1] = "r"
+  * [2} = "1" schaltet Relais an, alles andere schaltet aus
+* Länge = 4 und [1] = "m"\
+  *direkte Motor Geschwindigkeit Werte (Räder vorn und hinten synchronisiert)*
+  * [0] Zähler
+  * [1] = "m"
+  * [2] = motor_links (-512 .. 0 .. +512)
+  * [3] = motor_rechts (-512 .. 0 .. +512)
+* Länge = 4 und [1] = "j"\
+  *direkte Joystick x/y Werte (Raupensteuerung beim Empfänger)*
+  * [0] Zähler
+  * [1] = "j"
+  * [2] = j_fahren (0 .. 128 .. 255)
+  * [3] = j_lenken (0 .. 128 .. 255)
+* Länge = 3\
+  *Omniwheels mit Calliope Gestensensor steuern*\
+  *oder mit Buttons auf dem TXT 4.0 Touch Display*
+  * [0] Zähler
+  * [1] button_id ("bt_..") = 11 Buttons bzw. Gesten\
+    *Omniwheels 8 Richtungen gerade, 2 drehen auf der Stelle, Stop*
+    * "bt_0", "bt_stop" (stoppe 4 Motoren sync)
+    * ↑ ↓ "bt_fw", "bt_bw" (vorwärts, rückwaärts)
+    * ← → "bt_left", "bt_right" (gerade nach links, rechts)
+    * ↖ ↗ ↙ ↘ "bt_fw_left", "bt_fw_right", "bt_bw_left", "bt_bw_right"
+    * ↶ ↷ "bt_turn_left", "bt_turn_right" (auf der Stelle drehen)
+    * sonst (stoppe 4 Motoren sync)
+  * [2] speed (0 .. +512)
+* sonst\
+  *alle Motoren stoppen und "payload {} ungültig" anzeigen*
 
-> Gesten funktionieren nur, wenn kein LCD Display angeschlossen ist.
-
-### Kopf A geklickt
-* wenn Display angeschlossen
-  * die letzten 10 Response Strings im LCD Display anzeigen
-  * mit jedem Klick auf A wird weiter geschaltet (nur vorwärts)
-* wenn kein Display angeschlossen und <ins>MQTT verbunden</ins>
-  * Gesten abwechselnd an und aus schalten
-  * Gesten an
-    * `a lila` Geschwindigkeit beim Neigen langsamer
-    * `a blau` Geschwindigkeit beim Neigen max (512)
-  * Gesten aus
-    * MQTT Publish: STOP zum Modell senden
-    * `a aus` bei Erfolg `a rot` bei Fehler
-
-### Kopf A halten
-* wenn Display angeschlossen
-  * AT+MQTTCONN? MQTT Status abrufen und anzeigen
-* wenn kein Display angeschlossen
-  * den letzten Response String im Calliope Display anzeigen
-
-### Kopf A+B geklickt
-* zur Zeit nicht verwendet
-
-### Joystick
-* `b blinkt blau`
-* Fahren und Lenken nach dem Prinzip Raupensteuerung.
-* Die linken Räder und die rechten Räder sind jeweils synchronisiert.
-* Joystick nach rechts oder links: Drehen auf der Stelle.
-* Joystick Button schaltet das I²C Relais und das Licht am Modell.
-
-### Gesten (Calliope neigen, kippen, drehen)
-* `a blau` bei Stop, `a lila` beim Neigen
-* `a rot` bei MQTT Publish Fehler
-* wenn Logo nach unten
-* wenn Logo nach oben
-* wenn nach links neigen
-* wenn nach rechts neigen
-* wenn Display nach unten
-* wenn Display nach oben
-
-↶| |↷
----|---|---
-↖|↑|↗
-←|↯|→
-↙|↓|↘
-
-Modell fährt in die entsprechende Richtung. Die Tabelle zeigt alle möglichen Richtungen (8 gerade, 2 auf der Stelle drehen und Stop).
-Dabei werden teilweise zwei aufeinander folgende Gesten ausgewertet (erst links/rechts neigen, dann vor/zurück oder nach unten drehen).
+![](DSC00781_1024.JPG)
