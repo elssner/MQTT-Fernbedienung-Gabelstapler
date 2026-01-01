@@ -49,7 +49,7 @@ Nach dem Trennen nur `c gelb`.
 * `c weiß` Kopf B erkannt, loslassen
 * MQTT Client vorbereiten (ID, Username, Password)
 * `c rot` bei Fehler
-  * bei Erfolg
+* bei Erfolg
   * MQTT Client verbinden (IP Adresse, Port)
   * `c grün` bei Erfolg, `c orange` bei Fehler
   * <ins>MQTT ist verbunden</ins>
@@ -59,7 +59,8 @@ Nach dem Trennen nur `c gelb`.
 
 `c grün` zeigt an, dass MQTT verbunden und die Fernbedienung bereit ist.\
 `b blinkt blau`, wenn die Daten vom Joystick gesendet werden.\
-`a blau`, wenn die Gesten gesendet werden (muss noch aktiviert werden).
+`a blau`, Gesten für Omniwheels aktiviert (mit Kopf A geklickt aktivieren).\
+`a gelb`, Gesten für Gabelstapler aktiviert (mit Kopf A+B geklickt aktivieren).
 
 > Gesten funktionieren nur, wenn kein LCD Display angeschlossen ist.
 
