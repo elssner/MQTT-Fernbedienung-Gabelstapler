@@ -88,9 +88,9 @@ für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werd
 
 ***nach links neigen* oder *nach rechts neigen* ändert das Verhalten vom Joystick**
 * Geschwindigkeit von 512 reduziert: links geneigt=max 200; rechts geneigt=max 300
-* Joystick vor/zurück
+* (links/rechts geneigt) Joystick vor/zurück
   * Omniwheels rangieren mit Joystick synchron vor/zurück (keine Lenkung)
-* Joystick links/rechts
+* (links/rechts geneigt) Joystick links/rechts
   * Omniwheels rangieren mit Joystick synchron links/rechts (keine Lenkung)
 
 **ohne Neigung steuert der Joystick die Omniwheels normal, aber langsamer**
