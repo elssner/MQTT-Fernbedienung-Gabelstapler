@@ -81,6 +81,7 @@ Nach dem Trennen nur `c gelb`.
   * den letzten Response String im Calliope Display anzeigen
 
 ### Kopf A+B geklickt
+* <ins>wenn MQTT verbunden</ins>
 * Gesten für Gabelstapler an/aus schalten
 * `a gelb` Gabelstapler aktiviert `a aus` Gesten aus geschaltet
 * *nach vorne neigen* und *nach hinten neigen* schaltet den Gabelstapler Motor\
