@@ -69,7 +69,7 @@ Nach dem Trennen nur `c gelb`.
   * die letzten 10 Response Strings im LCD Display anzeigen
   * mit jedem Klick auf A wird weiter geschaltet (nur vorwärts)
 * wenn kein Display angeschlossen und <ins>MQTT verbunden</ins>
-  * Gesten abwechselnd an und aus schalten
+  * Gesten für Omniwheels abwechselnd an und aus schalten
   * `a lila` Geschwindigkeit beim Neigen langsamer
   * `a blau` Geschwindigkeit beim Neigen max (512)
   * `a aus` Gesten aus geschaltet
@@ -81,9 +81,10 @@ Nach dem Trennen nur `c gelb`.
   * den letzten Response String im Calliope Display anzeigen
 
 ### Kopf A+B geklickt
-* Gabelstapler Fernsteuerung an/aus schalten
+* Gesten für Gabelstapler an/aus schalten
 * `a gelb` Gabelstapler aktiviert
-* *nach vorne neigen* und *nach hinten neigen* schaltet den Gabelstapler Motor für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werden.
+* *nach vorne neigen* und *nach hinten neigen* schaltet den Gabelstapler Motor\
+für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werden.
 
 
 
