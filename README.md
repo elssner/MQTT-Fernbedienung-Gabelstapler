@@ -59,8 +59,8 @@ Nach dem Trennen nur `c gelb`.
 
 `c grün` zeigt an, dass MQTT verbunden und die Fernbedienung bereit ist.\
 `b blinkt blau`, wenn die Daten vom Joystick gesendet werden.\
-`a blau`, Gesten für Omniwheels aktiviert (mit Kopf A geklickt aktivieren).\
-`a gelb`, Gesten für Gabelstapler aktiviert (mit Kopf A+B geklickt aktivieren).
+`a blau` Gesten für Omniwheels (mit Kopf A geklickt aktivieren).\
+`a gelb` Gesten für Gabelstapler (mit Kopf A+B geklickt aktivieren).
 
 > Gesten funktionieren nur, wenn kein LCD Display angeschlossen ist.
 
