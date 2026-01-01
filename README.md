@@ -32,11 +32,11 @@ Diese Seite bei [https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/](htt
 Jetzt sollte `a grün` leuchten und - wenn kein Display angeschlossen ist - `b orange`.
 
 ### `b` Kopf B geklickt
-* WLAN verbinden <ins>wenn MQTT nicht verbunden</ins>
+* <ins>wenn MQTT nicht verbunden</ins>: WLAN verbinden
   * `b weiß` wenn Kopf B geklickt
   * WLAN verbinden (SSID und Password)
   * `b grün` bei Erfolg `b rot` bei Fehler
-* MQTT trennen <ins>wenn MQTT verbunden</ins>
+* <ins>wenn MQTT verbunden</ins>: MQTT trennen
   * `a aus` und  `b aus`
   * <ins>MQTT trennen</ins>
   * `c gelb` bei Erfolg `c rot` bei Fehler
