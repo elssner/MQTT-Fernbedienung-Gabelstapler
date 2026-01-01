@@ -95,6 +95,7 @@ für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werd
 
 **ohne Neigung steuert der Joystick die Omniwheels normal, aber langsamer**
 * Geschwindigkeit reduziert auf 40% (wenn Joystick am Anschlag)
+* Fahren und Lenken; Joystick links/rechts: Drehen auf der Stelle (langsam)
 
 ### Joystick
 * `b blinkt blau`
