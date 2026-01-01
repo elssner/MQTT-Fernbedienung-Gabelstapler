@@ -1,11 +1,11 @@
 
-Diese Seite bei [https://elssner.github.io/MQTT-Fernbedienung/](https://elssner.github.io/MQTT-Fernbedienung/) öffnen
+Diese Seite bei [https://elssner.github.io/mqtt-fernbedienung-gabelstapler/](https://elssner.github.io/mqtt-fernbedienung-gabelstapler/) öffnen.
 
 ## Calliope WLAN Fernbedienung (MQTT / IoT)
 
 ![](doc/DSC00693_Fernbedienung_512.JPG)
 
-* Calliope v3 Projekt laden: [elssner/MQTT-Fernbedienung](https://elssner.github.io/MQTT-Fernbedienung/)
+* Calliope v3 Projekt laden: [elssner/MQTT-Fernbedienung-Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/)
 * WLAN Modul: [Cytron: Grove WiFi 8266 - IoT for micro:bit and beyond](doc/)
 * Andere 8266 oder 8285 Module sind nicht geeignet.
 * I²C Qwiic Joystick und LCD Display (Qwiic oder Grove) sind optional.
@@ -108,29 +108,3 @@ Modell fährt in die entsprechende Richtung. Die Tabelle zeigt alle möglichen R
 Dabei werden teilweise zwei aufeinander folgende Gesten ausgewertet (erst links/rechts neigen, dann vor/zurück oder nach unten drehen).
 
 ![](doc/DSC00693_1920.JPG)
-
-
-
-> Diese Seite bei [https://elssner.github.io/mqtt-fernbedienung-gabelstapler/](https://elssner.github.io/mqtt-fernbedienung-gabelstapler/) öffnen
-
-## Als Erweiterung verwenden
-
-Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
-
-* öffne [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
-* klicke auf **Neues Projekt**
-* klicke auf **Erweiterungen** unter dem Zahnrad-Menü
-* nach **https://github.com/elssner/mqtt-fernbedienung-gabelstapler** suchen und importieren
-
-## Dieses Projekt bearbeiten
-
-Um dieses Repository in MakeCode zu bearbeiten.
-
-* öffne [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
-* klicke auf **Importieren** und dann auf **Importiere URL**
-* füge **https://github.com/elssner/mqtt-fernbedienung-gabelstapler** ein und klicke auf Importieren
-
-#### Metadaten (verwendet für Suche, Rendering)
-
-* for PXT/calliopemini
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
