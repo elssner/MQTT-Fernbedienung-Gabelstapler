@@ -4,7 +4,7 @@
 
 ## Calliope WLAN Fernbedienung (MQTT / IoT)
 
-![](mqtt/DSC00693_Fernbedienung_512.JPG)
+![](mqtt/DSC00693_LCD_512.JPG)
 
 * Calliope v3 Projekt laden: [elssner/MQTT-Fernbedienung-Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/)
 * WLAN Modul: [Cytron: Grove WiFi 8266 - IoT for micro:bit and beyond](doc/)
