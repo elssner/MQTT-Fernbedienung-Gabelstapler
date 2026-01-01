@@ -83,19 +83,22 @@ Nach dem Trennen nur `c gelb`.
 ### Kopf A+B geklickt
 * Gabelstapler Fernsteuerung an/aus schalten
 * `a gelb` Gabelstapler aktiviert
+* *nach vorne neigen* und *nach hinten neigen* schaltet den Gabelstapler Motor für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werden.
+
+
 
 ### Joystick
 * `b blinkt blau`
 * Fahren und Lenken nach dem Prinzip Raupensteuerung.
-* Die linken Räder und die rechten Räder sind jeweils synchronisiert.
+* Die Räder vorn und hinten sind synchronisiert.
 * Joystick nach rechts oder links: Drehen auf der Stelle.
 * Joystick Button schaltet das I²C Relais und das Licht am Modell.
 
 ### Gesten (Calliope neigen, kippen, drehen)
-* `a blau` bei Stop, `a aus` beim Neigen
+* `a blau` bei Stop, `a magenta` beim Neigen
 * `a rot` bei MQTT Publish Fehler
-* wenn Logo nach unten
-* wenn Logo nach oben
+* wenn nach vorne neigen
+* wenn nach hinten neigen
 * wenn nach links neigen
 * wenn nach rechts neigen
 * wenn Display nach unten
