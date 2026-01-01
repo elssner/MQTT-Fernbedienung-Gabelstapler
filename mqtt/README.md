@@ -1,6 +1,6 @@
-[Calliope WLAN Fernbedienung](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/) | [MQTT Kommandos für Omniwheels mit Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/mqtt/)
+[Calliope WLAN Fernbedienung](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/) | [MQTT Kommandos für Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/mqtt/)
 
-### MQTT Kommandos für Omniwheels mit Gabelstapler
+## MQTT Kommandos für Gabelstapler
 
 * fischertechnik ROBO Pro Coding Projekt: [MQTT_Gabelstapler](https://git.fischertechnik-cloud.com/calliope/MQTT_Gabelstapler)
 
