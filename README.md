@@ -16,7 +16,8 @@ Diese Seite bei [https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/](htt
 * `rot` bei Fehler nach einem AT-Kommando
 * `orange` Warnung
 * `blau` Verbindung ist aktiv
-* `gelb` Verbindung getrennt (mit Knopf B)
+* `a gelb` Gabelstapler mit Gesten steuern
+* `c gelb` Verbindung getrennt (mit Knopf B)
 
 
 ### `a` beim Start
