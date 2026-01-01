@@ -14,27 +14,32 @@ input.onGesture(Gesture.ScreenDown, function () {
     g_status += 2
     mqtt_publish_bt("bt_turn" + richtung, bt_speed)
 })
-function joystick_neigen (j_fahren: number, j_lenken: number) {
+function joystick_neigen (j_fahren: number, j_lenken: number, j_langsam: boolean) {
+    if (j_langsam) {
+        j_high = 200
+    } else {
+        j_high = 300
+    }
     if (j_fahren < 128) {
         bid = "bt_bw"
-        bsp = basic.mapInt32(j_fahren, 128, 0, 0, 300)
+        bsp = basic.mapInt32(j_fahren, 128, 0, 0, j_high)
     } else if (j_fahren > 128) {
         bid = "bt_fw"
-        bsp = basic.mapInt32(j_fahren, 128, 255, 0, 300)
+        bsp = basic.mapInt32(j_fahren, 128, 255, 0, j_high)
     } else if (j_lenken < 128) {
         bid = "bt_left"
-        bsp = basic.mapInt32(j_lenken, 128, 0, 0, 300)
+        bsp = basic.mapInt32(j_lenken, 128, 0, 0, j_high)
     } else if (j_lenken > 128) {
         bid = "bt_right"
-        bsp = basic.mapInt32(j_lenken, 128, 255, 0, 300)
+        bsp = basic.mapInt32(j_lenken, 128, 255, 0, j_high)
     } else {
         bid = "bt_stop"
         bsp = 0
     }
-    gesten = true
-    last_button_id = ""
-    mqtt_publish_bt(bid, bsp)
-    gesten = false
+    i_payload += 1
+    publish_ok = serial.mqtt_publish("topic", serial.string_join(";", i_payload, bid, bsp))
+    lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
+    return publish_ok
 }
 function mqtt_publish_qmotor (speed: number) {
     if (mqtt_connected && qmotor) {
@@ -55,18 +60,32 @@ function mqtt_publish_joystick () {
     } else if (last_joystick_button != "0" && !(pins.get_button_on_off())) {
         mqtt_publish_relay("0")
     }
-    if (joystick_fahren == pins.get_x() && joystick_lenken == pins.get_y()) {
+    if (last_x == pins.get_x() && last_y == pins.get_y()) {
         pins.comment(pins.pins_text("wenn nichts geändert, kein Publish"))
     } else if (qmotor && richtung != "") {
-        joystick_neigen(pins.get_x(), pins.get_y())
-        joystick_fahren = pins.get_x()
-        joystick_lenken = pins.get_y()
+        pins.comment(pins.pins_text("Gabelstapler Modus und geneigt:"))
+        pins.comment(pins.pins_text("mit Joystick fw bw l r rangieren"))
+        if (joystick_neigen(pins.get_x(), pins.get_y(), richtung == "_left")) {
+            last_x = pins.get_x()
+            last_y = pins.get_y()
+        } else {
+            basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000)
+            basic.pause(200)
+        }
     } else {
+        if (qmotor) {
+            pins.comment(pins.pins_text("Gabelstapler Modus und gerade: langsam rangieren"))
+            jf = pins.joystick_prozent(pins.get_x(), 40)
+            jl = pins.joystick_prozent(pins.get_y(), 40)
+        } else {
+            jf = pins.get_x()
+            jl = pins.get_y()
+        }
         i_payload += 1
-        if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "j", pins.get_x(), pins.get_y()))) {
+        if (serial.mqtt_publish("topic", serial.string_join(";", i_payload, "j", jf, jl))) {
             pins.comment(pins.pins_text("wenn Publish erfolgreich, x y Werte speichern"))
-            joystick_fahren = pins.get_x()
-            joystick_lenken = pins.get_y()
+            last_x = pins.get_x()
+            last_y = pins.get_y()
         } else {
             pins.comment(pins.pins_text("wenn Publish false, nach Pause noch mal versuchen"))
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000)
@@ -155,8 +174,8 @@ input.onButtonEvent(Button.B, input.buttonEventValue(ButtonEvent.Hold), function
         lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
         if (serial.mqtt_connect("192.168.8.2", 1884)) {
             i_payload = 0
-            joystick_fahren = 128
-            joystick_lenken = 128
+            last_x = 128
+            last_y = 128
             last_joystick_button = "0"
             mqtt_connected = true
             basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.a), 0x0000ff, gesten)
@@ -214,16 +233,20 @@ function mqtt_publish_bt (button_id: string, speed: number) {
         lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
     }
 }
-let joystick_lenken = 0
-let joystick_fahren = 0
-let last_joystick_button = ""
-let i_payload = 0
-let qmotor = false
-let mqtt_connected = false
 let last_button_id = ""
 let gesten = false
+let jl = 0
+let jf = 0
+let last_y = 0
+let last_x = 0
+let last_joystick_button = ""
+let qmotor = false
+let mqtt_connected = false
+let publish_ok = false
+let i_payload = 0
 let bsp = 0
 let bid = ""
+let j_high = 0
 let bt_speed = 0
 let g_status = 0
 let richtung = ""
