@@ -92,7 +92,7 @@ für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werd
 * Joystick links/rechts
   * Omniwheels rangieren mit Joystick synchron links/rechts (keine Lenkung)
 * **ohne Neigung steuert der Joystick die Omniwheels normal, aber langsamer**
-* Geschwindigkeit reduziert auf 40%
+* Geschwindigkeit reduziert auf 40% (wenn Joystick am Anschlag)
 * `a aus` Gesten aus geschaltet
 
 ### Joystick
