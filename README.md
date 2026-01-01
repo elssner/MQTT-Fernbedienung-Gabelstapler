@@ -85,14 +85,15 @@ Nach dem Trennen nur `c gelb`.
 * `a gelb` Gabelstapler aktiviert
 * *nach vorne neigen* und *nach hinten neigen* schaltet den Gabelstapler Motor\
 für 2,55 Sekunden an. Die Geste muss bis zur gewünschten Höhe wiederholt werden.
-
-* *nach links neigen* oder *nach rechts neigen* ändert das Verhalten vom Joystick
+* ***nach links neigen* oder *nach rechts neigen* ändert das Verhalten vom Joystick**
+* Geschwindigkeit von 512 reduziert: links geneigt=max 200; rechts geneigt=max 300
 * Joystick vor/zurück
   * Omniwheels rangieren mit Joystick synchron vor/zurück (keine Lenkung)
 * Joystick links/rechts
   * Omniwheels rangieren mit Joystick synchron links/rechts (keine Lenkung)
-* Geschwindigkeit von 512 reduziert: links geneigt=max 200; rechts geneigt=max 300
-
+* **ohne Neigung steuert der Joystick die Omniwheels normal, aber langsamer**
+* Geschwindigkeit reduziert auf 40%
+* `a aus` Gesten aus geschaltet
 
 ### Joystick
 * `b blinkt blau`
