@@ -1,5 +1,5 @@
 
-[Calliope WLAN Fernbedienung](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/) | [MQTT Kommandos für Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/mqtt/)
+[Calliope WLAN Fernbedienung](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/) | [MQTT für Omniwheels mit Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/mqtt/)
 
 
 ## Calliope WLAN Fernbedienung (MQTT / IoT)
