@@ -7,7 +7,7 @@
 ![](mqtt/DSC00693_LCD_512.JPG)
 
 * Calliope v3 Projekt laden: [elssner/MQTT-Fernbedienung-Gabelstapler](https://elssner.github.io/MQTT-Fernbedienung-Gabelstapler/)
-* WLAN Modul: [Cytron: Grove WiFi 8266 - IoT for micro:bit and beyond](doc/)
+* WLAN Modul: [Cytron: Grove WiFi 8266 - IoT for micro:bit and beyond](https://elssner.github.io/MQTT-Fernbedienung/doc/)
 * Andere 8266 oder 8285 Module sind nicht geeignet.
 * I²C Qwiic Joystick und LCD Display (Qwiic oder Grove) sind optional.
 
