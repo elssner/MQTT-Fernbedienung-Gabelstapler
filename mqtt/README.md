@@ -85,3 +85,7 @@ Folgende Daten-Strings werden vom Modell **MQTT Gabelstapler** verstanden:
 
 ![](DSC00976_1024.JPG)
 ![](DSC00965_1024.JPG)
+![](DSC00972_1024.JPG)
+![](DSC00968_1024.JPG)
+![](DSC00966_1024.JPG)
+![](DSC00962_1024.JPG)
