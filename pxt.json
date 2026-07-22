@@ -8,7 +8,8 @@
         "v3": "*",
         "serial": "github:calliope-net/serial#v0.2.4",
         "lcd": "github:calliope-net/lcd#v0.1.5",
-        "basicv3": "github:calliope-net/basicv3#v0.0.2"
+        "basicv3": "github:calliope-net/basicv3#v0.0.2",
+        "storage": "github:calliope-edu/pxt-storage#f18d408b75c5516a0510fb8c4f5a81bbcf799508"
     },
     "files": [
         "main.blocks",
@@ -19,7 +20,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "8.1.11",
+        "target": "8.1.13",
         "targetId": "calliopemini"
     },
     "supportedTargets": [

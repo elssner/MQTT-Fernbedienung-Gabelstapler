@@ -134,7 +134,7 @@ input.onButtonEvent(Button.AB, input.buttonEventClick(), function () {
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     if (!(mqtt_connected)) {
         basic.setLedColors1(basic.basicv3_rgbled(basic.eRGBLED.b), 0xffffff)
-        basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000, serial.wifi_connect("TXT4.0-sWp6", "ozvTwHC7"), 0x00FF00)
+        basic.setLedColors2(basic.basicv3_rgbled(basic.eRGBLED.b), 0xff0000, wlan_connect(storage.getNumber(StorageSlots.s3)), 0x00FF00)
     } else {
         mqtt_connected = false
         mqtt_publish_stop_a_aus()
@@ -143,6 +143,19 @@ input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     }
     lcd.write_array(serial.get_response(), lcd.eINC.inc1, 0)
 })
+function wlan_select (st3: number) {
+    if (st3 == 1 && serial.wifi_connect("TXT4.0-sWp6", "ozvTwHC7")) {
+        return 1
+    } else if (st3 == 2 && serial.wifi_connect("TXT4.0-HV43", "Tq4Vgkfq")) {
+        return 2
+    } else if (st3 == 3 && serial.wifi_connect("TXT4.0-gjNx", "E5643566")) {
+        return 3
+    } else if (st3 == 4 && serial.wifi_connect("TXT4.0-TYMx", "xjwWE6Bk")) {
+        return 4
+    } else {
+        return 0
+    }
+}
 input.onGesture(Gesture.LogoDown, function () {
     if (!(qmotor)) {
         g_status += 2
@@ -200,6 +213,17 @@ input.onGesture(Gesture.ScreenUp, function () {
         mqtt_publish_qmotor(128)
     }
 })
+function wlan_connect (stor3: number) {
+    basic.showNumber(stor3)
+    if (basic.between(stor3, 1, 4) && wlan_select(stor3) == stor3) {
+        return true
+    } else if (stor3 < 4) {
+        storage.putNumber(StorageSlots.s3, stor3 + 1)
+    } else {
+        storage.putNumber(StorageSlots.s3, 1)
+    }
+    return false
+}
 input.onGesture(Gesture.LogoUp, function () {
     if (!(qmotor)) {
         g_status += 2
