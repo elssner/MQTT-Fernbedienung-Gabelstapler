@@ -217,7 +217,7 @@ function wlan_connect (stor3: number) {
     basic.showNumber(stor3)
     if (basic.between(stor3, 1, 4) && wlan_select(stor3) == stor3) {
         return true
-    } else if (stor3 < 4) {
+    } else if (basic.between(stor3, 1, 3)) {
         storage.putNumber(StorageSlots.s3, stor3 + 1)
     } else {
         storage.putNumber(StorageSlots.s3, 1)
